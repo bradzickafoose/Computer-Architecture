@@ -2,6 +2,10 @@
 
 import sys
 
+LDI = 0b10000010
+PRN = 0b01000111
+HLT = 0b00000001
+
 class CPU:
     """Main CPU class."""
 
@@ -10,6 +14,7 @@ class CPU:
         self.ram = [0] * 256  # 256 bytes of memory (RAM)
         self.registers = [0] * 8  # 8 general-purpose CPU registers
         self.pc = 0 # Program Counter, address of the currently executing instruction
+        self.running = True
 
     def ram_read(self, address):
       return self.ram[address]
@@ -70,4 +75,18 @@ class CPU:
 
     def run(self):
         """Run the CPU."""
-        pass
+
+        while self.running:
+          ir = self.ram_read(self.pc) # Instruction Register, contains a copy of the currently executing instruction
+          operand_a = self.ram_read(self.pc+1)
+          operand_b = self.ram_read(self.pc+2)
+
+          if ir == LDI:
+            self.registers[operand_a] = operand_b
+            self.pc += 3
+          elif ir == PRN:
+            print(self.registers[operand_a])
+            self.pc += 2
+          elif ir == HLT:
+            self.running = False
+
