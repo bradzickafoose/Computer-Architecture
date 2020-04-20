@@ -8,9 +8,11 @@ class CPU:
     def __init__(self):
         """Construct a new CPU."""
         self.ram = [0] * 256  # 256 bytes of memory (RAM)
-        self.reg = [0] * 8  # 8 general-purpose CPU registers
+        self.registers = [0] * 8  # 8 general-purpose CPU registers
         self.pc = 0 # Program Counter, address of the currently executing instruction
 
+    def ram_read(self, address):
+      return self.ram[address]
 
     def load(self):
         """Load a program into memory."""
